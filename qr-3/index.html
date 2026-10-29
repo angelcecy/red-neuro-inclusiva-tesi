@@ -4,17 +4,172 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Red Neuro-Inclusiva TESI</title>
-    <!-- Tipografía premium para una lectura placentera -->
+    <!-- Tipografía premium -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <!-- Conexión irrompible a tu CSS con Cache Busting -->
-    <link rel="stylesheet" href="style.css?v=2.0">
+    
+    <!-- TODO EL CSS INTEGRADO AQUÍ PARA EVITAR ERRORES DE SERVIDOR -->
+    <style>
+        :root {
+            --bg-body: #f4f7f6;
+            --text-dark: #1e293b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-body); 
+            color: var(--text-dark); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 2rem 1rem; 
+        }
+
+        header { 
+            text-align: center; 
+            max-width: 850px; 
+            margin-bottom: 2.5rem; 
+            width: 100%;
+        }
+
+        header h1 { 
+            font-size: 2.8rem; 
+            color: #0f766e; 
+            margin-bottom: 1.5rem; 
+            font-weight: 700; 
+            letter-spacing: -1px;
+        }
+
+        .main-concept { 
+            background: white; 
+            padding: 2rem 2.5rem; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06); 
+            border-left: 6px solid #0f766e; 
+            text-align: left; 
+        }
+
+        .main-concept h2 { font-size: 1.3rem; margin-bottom: 0.8rem; color: #0f766e; }
+        .main-concept p { line-height: 1.7; color: #475569; font-size: 1.05rem; }
+
+        /* Motor Visual Flexbox */
+        .modern-accordion { 
+            display: flex; 
+            width: 100%; 
+            max-width: 950px; 
+            height: 550px; 
+            gap: 15px; 
+        }
+
+        .modern-accordion input { display: none; }
+
+        .card { 
+            flex: 1; 
+            border-radius: 24px; 
+            cursor: pointer; 
+            transition: flex 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); 
+            position: relative; 
+            overflow: hidden; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+        }
+
+        .bg-tdah { background: linear-gradient(135deg, #0284c7, #38bdf8); }
+        .bg-tea { background: linear-gradient(135deg, #0f766e, #2dd4bf); }
+        .bg-dislexia { background: linear-gradient(135deg, #ea580c, #fbbf24); }
+
+        .tab-title { 
+            position: absolute; 
+            bottom: 40px; 
+            left: 50%; 
+            transform: translateX(-50%) rotate(-90deg); 
+            transform-origin: center; 
+            color: white; 
+            font-weight: 700; 
+            font-size: 1.3rem; 
+            letter-spacing: 4px; 
+            white-space: nowrap; 
+            transition: opacity 0.3s; 
+            text-transform: uppercase; 
+        }
+
+        .card-content { 
+            position: absolute; 
+            top: 0; left: 0; width: 100%; height: 100%; 
+            padding: 3rem; color: white; opacity: 0; 
+            transition: opacity 0.4s ease 0.3s; 
+            pointer-events: none; 
+            display: flex; align-items: center; 
+        }
+
+        .content-wrapper { width: 100%; max-width: 550px; }
+
+        .modern-accordion input:checked + .card { flex: 6; cursor: default; }
+        .modern-accordion input:checked + .card .tab-title { opacity: 0; }
+        .modern-accordion input:checked + .card .card-content { opacity: 1; pointer-events: auto; }
+
+        .card-content h2 { font-size: 3.5rem; font-weight: 700; margin-bottom: 0.5rem; text-shadow: 2px 4px 10px rgba(0,0,0,0.2); line-height: 1; }
+        .card-content .subtitle { font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1.5rem; opacity: 0.9; }
+        .card-content .desc { font-size: 1.1rem; line-height: 1.6; margin-bottom: 2.5rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.15); }
+
+        .btn-group { display: flex; gap: 15px; flex-wrap: wrap; }
+        
+        .modal-btn { 
+            background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.4); 
+            color: white; padding: 12px 24px; border-radius: 30px; 
+            font-size: 1rem; font-weight: 600; cursor: pointer; 
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+            display: flex; align-items: center; gap: 12px; 
+            backdrop-filter: blur(8px); font-family: inherit; 
+        }
+
+        .modal-btn:hover { background: white; color: #1e293b; transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .modal-btn .icon { background: white; color: #1e293b; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .modal-btn:hover .icon { background: #1e293b; color: white; }
+
+        /* Modales */
+        .modal-overlay { 
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); 
+            display: flex; align-items: center; justify-content: center; 
+            z-index: 9999; opacity: 0; visibility: hidden; transition: all 0.3s ease; padding: 20px; 
+        }
+
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        
+        .modal-box { 
+            background: white; width: 100%; max-width: 500px; padding: 2.5rem; 
+            border-radius: 20px; position: relative; transform: translateY(40px) scale(0.95); 
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 25px 50px rgba(0,0,0,0.3); 
+        }
+
+        .modal-overlay.active .modal-box { transform: translateY(0) scale(1); }
+        
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 2.5rem; color: #94a3b8; cursor: pointer; line-height: 1; transition: color 0.2s; }
+        .close-btn:hover { color: #ef4444; }
+        
+        .modal-box h3 { font-size: 1.6rem; margin-bottom: 1rem; border-bottom: 2px solid #f1f5f9; padding-bottom: 0.8rem; }
+        .modal-box p, .modal-box ul { color: #475569; line-height: 1.7; font-size: 1.05rem; margin-bottom: 1rem; }
+        .modal-box ul { padding-left: 1.5rem; }
+        .modal-box li { margin-bottom: 0.5rem; }
+
+        /* Responsivo Celulares */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.2rem; }
+            .modern-accordion { flex-direction: column; height: 750px; }
+            .tab-title { bottom: auto; top: 50%; left: 30px; transform: translateY(-50%); letter-spacing: 2px; font-size: 1.4rem; }
+            .card-content { padding: 2rem 1.5rem; }
+            .card-content h2 { font-size: 2.5rem; }
+            .card-content .desc { font-size: 1rem; margin-bottom: 1.5rem; }
+            .modern-accordion input:checked + .card { flex: 5; }
+        }
+    </style>
 </head>
 <body>
 
     <header>
         <h1>Red Neuro-Inclusiva</h1>
-        
-        <!-- Concepto Principal Elegante -->
         <div class="main-concept">
             <h2>¿Qué es la Neurodivergencia?</h2>
             <p>Es la comprensión biológica de que los cerebros humanos funcionan, aprenden y procesan la información de formas distintas. <strong>No existe un cerebro "estándar".</strong> La clave de la inclusión académica no es forzar al alumno a encajar en un molde, sino adaptar el entorno para permitir que todas las mentes puedan brillar.</p>
@@ -22,10 +177,8 @@
     </header>
 
     <main>
-        <!-- Nuevo Motor Flexbox: Irrompible y fluido -->
         <div class="modern-accordion">
             
-            <!-- TARJETA 1: TDAH -->
             <input type="radio" name="neuro-slider" id="tab-tdah" checked>
             <label for="tab-tdah" class="card bg-tdah">
                 <div class="tab-title">TDAH</div>
@@ -34,8 +187,6 @@
                         <h2>TDAH</h2>
                         <p class="subtitle">Déficit de Atención e Hiperactividad</p>
                         <p class="desc">Un cerebro en constante búsqueda de estímulos. Suelen poseer un pensamiento divergente, altísima creatividad y una capacidad asombrosa de "hiperenfoque" en temas que les apasionan.</p>
-                        
-                        <!-- Botones que abren las ventanas modales -->
                         <div class="btn-group">
                             <button class="modal-btn" onclick="openModal('modal-tdah-1')"><span class="icon">+</span> ¿Cómo aprenden?</button>
                             <button class="modal-btn" onclick="openModal('modal-tdah-2')"><span class="icon">+</span> Apoyos Clave</button>
@@ -44,7 +195,6 @@
                 </div>
             </label>
 
-            <!-- TARJETA 2: TEA -->
             <input type="radio" name="neuro-slider" id="tab-tea">
             <label for="tab-tea" class="card bg-tea">
                 <div class="tab-title">TEA (Autismo)</div>
@@ -53,7 +203,6 @@
                         <h2>Espectro Autista</h2>
                         <p class="subtitle">Condición del Neurodesarrollo</p>
                         <p class="desc">Procesan el mundo de manera intensa, estructurada y lógica. Destacan por su extrema honestidad, memoria profunda para los detalles y una gran lealtad, aunque son vulnerables a la sobrecarga sensorial.</p>
-                        
                         <div class="btn-group">
                             <button class="modal-btn" onclick="openModal('modal-tea-1')"><span class="icon">+</span> Sus Barreras</button>
                             <button class="modal-btn" onclick="openModal('modal-tea-2')"><span class="icon">+</span> Apoyos Clave</button>
@@ -62,7 +211,6 @@
                 </div>
             </label>
 
-            <!-- TARJETA 3: DISLEXIA -->
             <input type="radio" name="neuro-slider" id="tab-dis">
             <label for="tab-dis" class="card bg-dislexia">
                 <div class="tab-title">Dislexia</div>
@@ -71,7 +219,6 @@
                         <h2>Dislexia</h2>
                         <p class="subtitle">Procesamiento de Lenguaje</p>
                         <p class="desc">El cerebro decodifica el lenguaje de forma diferente, haciendo la lectura tradicional agotadora. En contraste, poseen una capacidad superior para el razonamiento espacial, intuitivo y visual tridimensional.</p>
-                        
                         <div class="btn-group">
                             <button class="modal-btn" onclick="openModal('modal-dis-1')"><span class="icon">+</span> Fortalezas</button>
                             <button class="modal-btn" onclick="openModal('modal-dis-2')"><span class="icon">+</span> Apoyos Clave</button>
@@ -82,8 +229,6 @@
         </div>
     </main>
 
-    <!-- ================= VENTANAS MODALES INMERSIVAS ================= -->
-    
     <div id="modal-tdah-1" class="modal-overlay" onclick="closeModal(event, this)">
         <div class="modal-box">
             <span class="close-btn" onclick="closeModal(event, this.parentElement.parentElement)">&times;</span>
@@ -92,71 +237,58 @@
             <p><strong>Micro-aprendizaje:</strong> Requieren que la información se divida en bloques cortos. La gamificación y los retos rápidos mantienen su dopamina y su interés al máximo.</p>
         </div>
     </div>
-
     <div id="modal-tdah-2" class="modal-overlay" onclick="closeModal(event, this)">
         <div class="modal-box">
             <span class="close-btn" onclick="closeModal(event, this.parentElement.parentElement)">&times;</span>
-            <h3 style="color: #0284c7;">TDAH: Apoyos Clave en el Aula</h3>
+            <h3 style="color: #0284c7;">TDAH: Apoyos Clave</h3>
             <ul>
                 <li>Permitirles pausas breves para ponerse de pie o estirarse.</li>
-                <li>Entregar instrucciones complejas por escrito y divididas en pasos (Checklists).</li>
+                <li>Entregar instrucciones complejas por escrito y divididas en pasos.</li>
                 <li>Reducir distracciones visuales o auditivas cerca de su lugar de trabajo.</li>
             </ul>
         </div>
     </div>
-
     <div id="modal-tea-1" class="modal-overlay" onclick="closeModal(event, this)">
         <div class="modal-box">
             <span class="close-btn" onclick="closeModal(event, this.parentElement.parentElement)">&times;</span>
             <h3 style="color: #0f766e;">TEA: Barreras Principales</h3>
-            <p><strong>Sobrecarga Sensorial:</strong> Las luces fluorescentes del salón, el eco, o el murmullo de los compañeros pueden causarles dolor físico, agotamiento o ansiedad extrema.</p>
-            <p><strong>Incertidumbre:</strong> Los cambios sorpresivos en el temario o actividades no planeadas desestabilizan su estructura mental y les generan estrés profundo.</p>
+            <p><strong>Sobrecarga Sensorial:</strong> Las luces fluorescentes, el eco, o el murmullo de los compañeros pueden causarles dolor físico, agotamiento o ansiedad extrema.</p>
+            <p><strong>Incertidumbre:</strong> Los cambios sorpresivos en el temario o actividades no planeadas desestabilizan su estructura mental.</p>
         </div>
     </div>
-
     <div id="modal-tea-2" class="modal-overlay" onclick="closeModal(event, this)">
         <div class="modal-box">
             <span class="close-btn" onclick="closeModal(event, this.parentElement.parentElement)">&times;</span>
-            <h3 style="color: #0f766e;">TEA: Apoyos Clave en el Aula</h3>
+            <h3 style="color: #0f766e;">TEA: Apoyos Clave</h3>
             <ul>
                 <li><strong>Anticipación:</strong> Entregar un cronograma claro y avisar de cualquier cambio con tiempo.</li>
-                <li><strong>Lenguaje Literal:</strong> Evitar sarcasmos, ironías o preguntas retóricas ambiguas en los exámenes.</li>
+                <li><strong>Lenguaje Literal:</strong> Evitar sarcasmos, ironías o preguntas retóricas ambiguas en exámenes.</li>
                 <li>Permitir el uso de audífonos canceladores de ruido durante el trabajo autónomo.</li>
             </ul>
         </div>
     </div>
-
     <div id="modal-dis-1" class="modal-overlay" onclick="closeModal(event, this)">
         <div class="modal-box">
             <span class="close-btn" onclick="closeModal(event, this.parentElement.parentElement)">&times;</span>
-            <h3 style="color: #ea580c;">Dislexia: Sus Grandes Fortalezas</h3>
-            <p>Suelen pensar en imágenes tridimensionales en lugar de palabras. Son excelentes resolviendo problemas complejos, diseñando sistemas y visualizando el "panorama general" de un proyecto.</p>
-            <p>Son estudiantes altamente creativos e innovadores cuando se les permite expresarse fuera del texto escrito tradicional.</p>
+            <h3 style="color: #ea580c;">Dislexia: Sus Fortalezas</h3>
+            <p>Suelen pensar en imágenes tridimensionales en lugar de palabras. Son excelentes resolviendo problemas complejos, diseñando sistemas y visualizando el "panorama general".</p>
         </div>
     </div>
-
     <div id="modal-dis-2" class="modal-overlay" onclick="closeModal(event, this)">
         <div class="modal-box">
             <span class="close-btn" onclick="closeModal(event, this.parentElement.parentElement)">&times;</span>
-            <h3 style="color: #ea580c;">Dislexia: Apoyos Clave en el Aula</h3>
+            <h3 style="color: #ea580c;">Dislexia: Apoyos Clave</h3>
             <ul>
                 <li><strong>Regla de oro:</strong> Jamás obligarlos a leer en voz alta de forma sorpresiva frente al grupo.</li>
                 <li>Proporcionar apuntes en formatos limpios: fuentes sin patines (Arial, Poppins), interlineado amplio y buen contraste.</li>
-                <li>Permitir métodos de evaluación alternativos (exposiciones orales, videos, diagramas de flujo) en lugar de ensayos largos.</li>
+                <li>Permitir métodos de evaluación alternativos (exposiciones orales, videos) en lugar de ensayos largos.</li>
             </ul>
         </div>
     </div>
 
-    <!-- Motor JavaScript para las Modales -->
     <script>
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
-        }
-        function closeModal(event, element) {
-            if(event.target === element || element.classList.contains('close-btn')) {
-                element.classList.remove('active');
-            }
-        }
+        function openModal(modalId) { document.getElementById(modalId).classList.add('active'); }
+        function closeModal(event, element) { if(event.target === element || element.classList.contains('close-btn')) { element.classList.remove('active'); } }
     </script>
 </body>
 </html>
