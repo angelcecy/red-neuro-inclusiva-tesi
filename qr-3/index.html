@@ -3,307 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Red Neuro-Inclusiva | Acordeón Dinámico</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #0d9488;
-            --accent: #f59e0b;
-            --bg-color: #0f172a; /* Fondo oscuro elegante */
-            --text-light: #f8fafc;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-light);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 2rem 1rem;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        header h1 {
-            font-size: 2.2rem;
-            background: linear-gradient(to right, #2dd4bf, #f59e0b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* ACORDEÓN HORIZONTAL MODERNO (Inspirado en tu idea) */
-        .accordion-container {
-            display: flex;
-            width: 100%;
-            max-width: 1000px;
-            height: 65vh; /* Ocupa el 65% del alto de la pantalla */
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-
-        .panel {
-            background-size: cover;
-            background-position: center;
-            flex: 1; /* Inicia delgado */
-            transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-            position: relative;
-            cursor: pointer;
-            overflow: hidden;
-        }
-
-        /* Imágenes de fondo para cada panel (Puedes cambiarlas por fotos de tu universidad) */
-        .panel:nth-child(1) { background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'); }
-        .panel:nth-child(2) { background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'); }
-        .panel:nth-child(3) { background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1456406644174-8ddd4cd52a06?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'); }
-
-        .panel.active {
-            flex: 5; /* Se expande 5 veces su tamaño original */
-            cursor: default;
-        }
-
-        .panel-content {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 2rem;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.5s ease 0.3s; /* Aparece con retraso después de expandirse */
-        }
-
-        .panel.active .panel-content {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .panel h2 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            white-space: nowrap; /* Evita que el título se rompa cuando está cerrado */
-            position: absolute;
-            bottom: 2rem;
-            left: -3rem;
-            transform: rotate(-90deg);
-            transform-origin: left bottom;
-            transition: all 0.5s ease;
-            color: #fff;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-        }
-
-        .panel.active h2 {
-            transform: rotate(0);
-            position: relative;
-            left: 0;
-            bottom: 0;
-            white-space: normal;
-        }
-
-        .panel p {
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-            color: #cbd5e1;
-        }
-
-        /* Botones para abrir ventanas interactivas */
-        .btn-concept {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            margin-right: 10px;
-            margin-bottom: 10px;
-        }
-
-        .btn-concept:hover {
-            background: var(--primary);
-            border-color: var(--primary);
-            transform: scale(1.05);
-        }
-
-        /* VENTANAS EMERGENTES (MODALES) - La innovación que pediste */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px); /* Efecto cristal esmerilado */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.4s ease;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .modal-box {
-            background: white;
-            color: var(--bg-color);
-            width: 90%;
-            max-width: 500px;
-            padding: 2.5rem;
-            border-radius: 20px;
-            transform: translateY(50px) scale(0.9);
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-            position: relative;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-        }
-
-        .modal-overlay.active .modal-box {
-            transform: translateY(0) scale(1);
-        }
-
-        .modal-box h3 {
-            color: var(--primary);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 1.5rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #94a3b8;
-            transition: color 0.2s;
-        }
-
-        .close-btn:hover { color: #ef4444; }
-
-        /* Adaptación para Celulares */
-        @media (max-width: 768px) {
-            .accordion-container {
-                flex-direction: column; /* En celular se apilan verticalmente */
-                height: 80vh;
-            }
-            .panel h2 {
-                transform: rotate(0);
-                left: 1rem;
-                bottom: 1rem;
-                font-size: 1.5rem;
-            }
-        }
-    </style>
+    <title>Red Neuro-Inclusiva TESI - Galería Interactiva</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Enlace al nuevo archivo de estilos -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
-        <h1>Perfiles Neurodivergentes</h1>
-        <p>Toca un panel para descubrir más</p>
+        <h1>Red Neuro-Inclusiva</h1>
+        <p>Explora interactuando con las tarjetas</p>
     </header>
 
-    <div class="accordion-container">
+    <div class="ia-container">
         
-        <!-- Panel 1: TDAH -->
-        <div class="panel active" onclick="activatePanel(this)">
-            <h2>TDAH</h2>
-            <div class="panel-content">
-                <p>Atención e Hiperactividad. Mentes creativas que buscan estímulos constantes.</p>
-                <button class="btn-concept" onclick="openModal('modal-hiperenfoque', event)">¿Qué es el Hiperenfoque?</button>
-                <button class="btn-concept" onclick="openModal('modal-tdah-aprende', event)">¿Cómo aprenden?</button>
+        <!-- Tarjeta 1: TDAH -->
+        <figure>
+            <div class="bg-gradient bg-tdah"></div>
+            <input type="radio" name="radio-set" checked="checked" /> 
+            <figcaption><span>TDAH</span></figcaption> 
+            
+            <div class="inner-content">
+                <h2>TDAH</h2>
+                
+                <div class="hotspot hs-1" tabindex="0">+
+                    <div class="popup-info">
+                        <h3>Hiperenfoque</h3>
+                        <p>Dificultad en rutinas, pero capacidad de atención extrema en temas de alto interés.</p>
+                    </div>
+                </div>
+
+                <div class="hotspot hs-2" tabindex="0">+
+                    <div class="popup-info">
+                        <h3>¿Cómo aprenden?</h3>
+                        <p>A través del movimiento (Kinestésico) y mediante retos cortos o gamificación.</p>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- Panel 2: TEA -->
-        <div class="panel" onclick="activatePanel(this)">
-            <h2>Espectro Autista</h2>
-            <div class="panel-content">
-                <p>Mentes lógicas, detallistas y estructuradas con procesamiento sensorial profundo.</p>
-                <button class="btn-concept" onclick="openModal('modal-sensorial', event)">Sobrecarga Sensorial</button>
-                <button class="btn-concept" onclick="openModal('modal-tea-aprende', event)">¿Cómo aprenden?</button>
-            </div>
-        </div>
+            <!-- Tarjeta 2: TEA -->
+            <figure>
+                <div class="bg-gradient bg-tea"></div>
+                <input type="radio" name="radio-set" /> 
+                <figcaption><span>TEA (Autismo)</span></figcaption> 
+                
+                <div class="inner-content">
+                    <h2>Espectro Autista</h2>
+                    
+                    <div class="hotspot hs-1" tabindex="0">+
+                        <div class="popup-info">
+                            <h3>Sobrecarga Sensorial</h3>
+                            <p>Sensibilidad extrema a ruidos fuertes o luces brillantes en el aula.</p>
+                        </div>
+                    </div>
 
-        <!-- Panel 3: Dislexia -->
-        <div class="panel" onclick="activatePanel(this)">
-            <h2>Dislexia</h2>
-            <div class="panel-content">
-                <p>Innovadores visuales que procesan el lenguaje escrito de forma alternativa.</p>
-                <button class="btn-concept" onclick="openModal('modal-multisensorial', event)">Apoyo Multisensorial</button>
-            </div>
-        </div>
+                    <div class="hotspot hs-3" tabindex="0">+
+                        <div class="popup-info">
+                            <h3>Apoyo útil</h3>
+                            <p>Estructura clara de la clase, instrucciones literales y evitar cambios sorpresivos.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tarjeta 3: Dislexia -->
+                <figure>
+                    <div class="bg-gradient bg-dislexia"></div>
+                    <input type="radio" name="radio-set" /> 
+                    <figcaption><span>Dislexia</span></figcaption> 
+                    
+                    <div class="inner-content">
+                        <h2>Dislexia</h2>
+                        
+                        <div class="hotspot hs-1" style="top: 50%; left: 40%;" tabindex="0">+
+                            <div class="popup-info">
+                                <h3>Barrera principal</h3>
+                                <p>El cerebro procesa distinto las letras; leer en voz alta bajo presión causa estrés extremo.</p>
+                            </div>
+                        </div>
 
+                        <div class="hotspot hs-2" style="top: 20%; left: 60%;" tabindex="0">+
+                            <div class="popup-info">
+                                <h3>Fortalezas</h3>
+                                <p>Altamente visuales, innovadores y con gran razonamiento espacial e intuitivo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </figure>
+            </figure>
+        </figure>
     </div>
 
-    <!-- =============== MODALES (Las Ventanas Interactivas) =============== -->
-    
-    <!-- Modal 1 -->
-    <div id="modal-hiperenfoque" class="modal-overlay" onclick="closeModal(this)">
-        <div class="modal-box" onclick="event.stopPropagation()">
-            <button class="close-btn" onclick="closeModal(this.parentElement.parentElement)">×</button>
-            <h3>El Súper-poder del Hiperenfoque</h3>
-            <p>Aunque el TDAH se asocia a la falta de atención, cuando un tema les apasiona, su cerebro libera dopamina y entran en un estado de concentración profunda ("hiperenfoque"). Pueden trabajar horas sin cansarse, perdiendo la noción del tiempo. ¡El reto docente es despertar ese interés inicial!</p>
-        </div>
-    </div>
-
-    <!-- Modal 2 -->
-    <div id="modal-tdah-aprende" class="modal-overlay" onclick="closeModal(this)">
-        <div class="modal-box" onclick="event.stopPropagation()">
-            <button class="close-btn" onclick="closeModal(this.parentElement.parentElement)">×</button>
-            <h3>TDAH: Estilo de Aprendizaje</h3>
-            <p>Aprender <strong>haciendo</strong> (Kinestésicos). Necesitan pausas activas, información dividida en bloques muy cortos y gamificación (retos y recompensas). Escuchar una clase magistral de 2 horas sin moverse es su mayor barrera.</p>
-        </div>
-    </div>
-
-    <!-- Modal 3 -->
-    <div id="modal-sensorial" class="modal-overlay" onclick="closeModal(this)">
-        <div class="modal-box" onclick="event.stopPropagation()">
-            <button class="close-btn" onclick="closeModal(this.parentElement.parentElement)">×</button>
-            <h3>Sobrecarga Sensorial (TEA)</h3>
-            <p>Imagina que todos los sonidos de la escuela, las luces de los pizarrones y el roce de la ropa estuvieran al 100% de volumen en tu cabeza al mismo tiempo. Eso es una sobrecarga. Permitirles usar audífonos de cancelación de ruido no es una falta de respeto, es una necesidad de autorregulación.</p>
-        </div>
-    </div>
-
-    <!-- Scripts para controlar la magia -->
-    <script>
-        // Función para expandir el panel del acordeón
-        function activatePanel(selectedPanel) {
-            // Quitar clase active a todos
-            document.querySelectorAll('.panel').forEach(panel => {
-                panel.classList.remove('active');
-            });
-            // Añadir clase active al seleccionado
-            selectedPanel.classList.add('active');
-        }
-
-        // Función para abrir la ventana modal
-        function openModal(modalId, event) {
-            event.stopPropagation(); // Evita que el clic cierre el acordeón de fondo
-            document.getElementById(modalId).classList.add('active');
-        }
-
-        // Función para cerrar la ventana modal
-        function closeModal(element) {
-            element.classList.remove('active');
-        }
-    </script>
 </body>
 </html>
