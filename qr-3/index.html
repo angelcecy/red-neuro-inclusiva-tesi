@@ -3,95 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Red Neuro-Inclusiva TESI - Galería Interactiva</title>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Enlace al nuevo archivo de estilos -->
+    <title>Red Neuro-Inclusiva TESI - Galería Dinámica</title>
+    <!-- Tipografía más elegante y moderna -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
         <h1>Red Neuro-Inclusiva</h1>
-        <p>Explora interactuando con las tarjetas</p>
+        <!-- Concepto Principal Integrado -->
+        <p class="main-concept">
+            <strong>¿Qué es la Neurodivergencia?</strong><br>
+            Es la comprensión biológica de que los cerebros humanos funcionan, aprenden y procesan la información de formas distintas. No existe un cerebro "estándar". La clave de la inclusión académica no es forzar al alumno a encajar, sino adaptar el entorno para eliminar las barreras de aprendizaje.
+        </p>
     </header>
 
     <div class="ia-container">
         
         <!-- Tarjeta 1: TDAH -->
         <figure>
-            <div class="bg-gradient bg-tdah"></div>
+            <div class="bg-layer bg-tdah"></div>
             <input type="radio" name="radio-set" checked="checked" /> 
             <figcaption><span>TDAH</span></figcaption> 
             
             <div class="inner-content">
                 <h2>TDAH</h2>
+                <p class="subtitle">Trastorno por Déficit de Atención e Hiperactividad</p>
+                <p class="desc">Cerebro en constante búsqueda de estímulos. Poseen un pensamiento divergente, alta creatividad y capacidad de "hiperenfoque" en temas que les apasionan.</p>
                 
-                <div class="hotspot hs-1" tabindex="0">+
-                    <div class="popup-info">
-                        <h3>Hiperenfoque</h3>
-                        <p>Dificultad en rutinas, pero capacidad de atención extrema en temas de alto interés.</p>
-                    </div>
-                </div>
-
-                <div class="hotspot hs-2" tabindex="0">+
-                    <div class="popup-info">
-                        <h3>¿Cómo aprenden?</h3>
-                        <p>A través del movimiento (Kinestésico) y mediante retos cortos o gamificación.</p>
-                    </div>
+                <div class="hotspots-container">
+                    <!-- Los botones ahora abren un Modal central -->
+                    <button class="action-btn" onclick="openModal('modal-tdah-1')">
+                        <span class="icon">+</span> ¿Cómo aprenden?
+                    </button>
+                    <button class="action-btn" onclick="openModal('modal-tdah-2')">
+                        <span class="icon">+</span> Apoyos Útiles
+                    </button>
                 </div>
             </div>
+        </figure>
 
-            <!-- Tarjeta 2: TEA -->
-            <figure>
-                <div class="bg-gradient bg-tea"></div>
-                <input type="radio" name="radio-set" /> 
-                <figcaption><span>TEA (Autismo)</span></figcaption> 
+        <!-- Tarjeta 2: TEA -->
+        <figure>
+            <div class="bg-layer bg-tea"></div>
+            <input type="radio" name="radio-set" /> 
+            <figcaption><span>TEA (AUTISMO)</span></figcaption> 
+            
+            <div class="inner-content">
+                <h2>Espectro Autista</h2>
+                <p class="subtitle">Condición del Neurodesarrollo</p>
+                <p class="desc">Procesan el mundo de manera intensa y lógica. Destacan por su honestidad, memoria profunda para detalles y lealtad. Pueden experimentar sobrecarga sensorial.</p>
                 
-                <div class="inner-content">
-                    <h2>Espectro Autista</h2>
-                    
-                    <div class="hotspot hs-1" tabindex="0">+
-                        <div class="popup-info">
-                            <h3>Sobrecarga Sensorial</h3>
-                            <p>Sensibilidad extrema a ruidos fuertes o luces brillantes en el aula.</p>
-                        </div>
-                    </div>
-
-                    <div class="hotspot hs-3" tabindex="0">+
-                        <div class="popup-info">
-                            <h3>Apoyo útil</h3>
-                            <p>Estructura clara de la clase, instrucciones literales y evitar cambios sorpresivos.</p>
-                        </div>
-                    </div>
+                <div class="hotspots-container">
+                    <button class="action-btn" onclick="openModal('modal-tea-1')">
+                        <span class="icon">+</span> Barreras Comunes
+                    </button>
+                    <button class="action-btn" onclick="openModal('modal-tea-2')">
+                        <span class="icon">+</span> Estilo de Aprendizaje
+                    </button>
                 </div>
+            </div>
+        </figure>
+        
+        <!-- Tarjeta 3: Dislexia -->
+        <figure>
+            <div class="bg-layer bg-dislexia"></div>
+            <input type="radio" name="radio-set" /> 
+            <figcaption><span>DISLEXIA</span></figcaption> 
+            
+            <div class="inner-content">
+                <h2>Dislexia</h2>
+                <p class="subtitle">Dificultad Específica de Aprendizaje</p>
+                <p class="desc">El cerebro procesa el lenguaje de forma diferente. La lectura tradicional es agotadora, pero poseen una capacidad superior para el razonamiento espacial, intuitivo y visual.</p>
                 
-                <!-- Tarjeta 3: Dislexia -->
-                <figure>
-                    <div class="bg-gradient bg-dislexia"></div>
-                    <input type="radio" name="radio-set" /> 
-                    <figcaption><span>Dislexia</span></figcaption> 
-                    
-                    <div class="inner-content">
-                        <h2>Dislexia</h2>
-                        
-                        <div class="hotspot hs-1" style="top: 50%; left: 40%;" tabindex="0">+
-                            <div class="popup-info">
-                                <h3>Barrera principal</h3>
-                                <p>El cerebro procesa distinto las letras; leer en voz alta bajo presión causa estrés extremo.</p>
-                            </div>
-                        </div>
-
-                        <div class="hotspot hs-2" style="top: 20%; left: 60%;" tabindex="0">+
-                            <div class="popup-info">
-                                <h3>Fortalezas</h3>
-                                <p>Altamente visuales, innovadores y con gran razonamiento espacial e intuitivo.</p>
-                            </div>
-                        </div>
-                    </div>
-                </figure>
-            </figure>
+                <div class="hotspots-container">
+                    <button class="action-btn" onclick="openModal('modal-dis-1')">
+                        <span class="icon">+</span> Fortalezas
+                    </button>
+                    <button class="action-btn" onclick="openModal('modal-dis-2')">
+                        <span class="icon">+</span> Estrategias en Aula
+                    </button>
+                </div>
+            </div>
         </figure>
     </div>
 
+    <!-- ================= VENTANAS MODALES (FLOTANTES) ================= -->
+    <!-- Al estar fuera del acordeón, NUNCA se cortarán -->
+    
+    <div id="modal-tdah-1" class="modal-overlay" onclick="closeModal(event, this)">
+        <div class="modal-box">
+            <span class="close-btn" onclick="closeModal(event, this.parentElement.parentElement)">&times;</span>
+            <h3 style="color: #0ea5e9;">TDAH: ¿Cómo aprenden?</h3>
+            <p><strong>Aprendizaje Kinestésico:</strong> Necesitan movimiento para procesar la información. Aprender haciendo prácticas, laboratorios o debates les funciona mejor que solo escuchar pasivamente.</p>
+            <p><strong>Micro-aprendizaje:</strong> Requieren la información dividida en bloques cortos (técnica Pomodoro). Las recompensas visuales y la gamificación mantienen su interés activo.</p>
+        </div>
+    </div>
+
+    <div id="modal-tdah-2" class="modal-overlay" onclick="closeModal(event, this)">
+        <div class="modal-box">
+            <span class="close-btn" onclick="closeModal(event, this.parentElement.parentElement)">&times;</span>
+            <h3 style="color: #0ea5e9;">TDAH: Apoyos Útiles</h3>
+            <ul>
+                <li>Permitir pausas breves o levantar la mano para moverse.</li>
+                <li>Entregar instrucciones por escrito, divididas paso a paso.</li>
+                <li>Flexibilidad en tiempos de entrega si el alumno muestra hiperenfoque en la calidad del proyecto.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="modal-tea-1" class="modal-overlay" onclick="closeModal(event, this)">
+        <div class="modal-box">
+            <span class="close-btn" onclick="closeModal(event, this.parentElement.parentElement)">&times;</span>
+            <h3 style="color: #14b8a6;">TEA: Barreras Comunes</h3>
+            <p><strong>Hipersensibilidad:</strong> Las luces fluorescentes del salón, el eco o el murmullo constante pueden causar dolor físico o estrés extremo (sobrecarga sensorial).</p>
+            <p><strong>Ansiedad por incertidumbre:</strong> Los cambios sorpresivos en el temario, cancelación de clases o evaluaciones no anunciadas desestabilizan su estructura mental.</p>
+        </div>
+    </div>
+
+    <div id="modal-tea-2" class="modal-overlay" onclick="closeModal(event, this)">
+        <div class="modal-box">
+            <span class="close-btn" onclick="closeModal(event, this.parentElement.parentElement)">&times;</span>
+            <h3 style="color: #14b8a6;">TEA: Estilo de Aprendizaje</h3>
+            <ul>
+                <li><strong>Estructura clara:</strong> Necesitan saber exactamente qué va a pasar. Un cronograma visual es vital.</li>
+                <li><strong>Instrucciones literales:</strong> Evitar el sarcasmo, ironías o preguntas retóricas en evaluaciones.</li>
+                <li><strong>Apoyo sensorial:</strong> Permitir el uso de audífonos canceladores de ruido durante el trabajo individual.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="modal-dis-1" class="modal-overlay" onclick="closeModal(event, this)">
+        <div class="modal-box">
+            <span class="close-btn" onclick="closeModal(event, this.parentElement.parentElement)">&times;</span>
+            <h3 style="color: #f59e0b;">Dislexia: Fortalezas</h3>
+            <p>Piensan en imágenes tridimensionales en lugar de palabras. Son excelentes resolviendo problemas complejos, diseñando sistemas, y entendiendo el "panorama general" (Big Picture Thinking).</p>
+            <p>Suelen ser estudiantes altamente creativos e innovadores si se les permite expresarse fuera del texto escrito.</p>
+        </div>
+    </div>
+
+    <div id="modal-dis-2" class="modal-overlay" onclick="closeModal(event, this)">
+        <div class="modal-box">
+            <span class="close-btn" onclick="closeModal(event, this.parentElement.parentElement)">&times;</span>
+            <h3 style="color: #f59e0b;">Dislexia: Estrategias en Aula</h3>
+            <ul>
+                <li><strong>Jamás pedir lectura en voz alta sorpresiva</strong> frente al grupo.</li>
+                <li>Proporcionar materiales en formatos amigables (fuentes Sans-Serif, interlineado amplio).</li>
+                <li>Evaluar el conocimiento a través de exposiciones orales, proyectos visuales, maquetas o infografías, reduciendo el peso de los exámenes escritos largos.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Script para controlar los modales -->
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(event, element) {
+            // Cierra si se hace clic en la "X" o fuera del recuadro blanco
+            if(event.target === element || element.classList.contains('close-btn')) {
+                element.classList.remove('active');
+            }
+        }
+    </script>
 </body>
 </html>
