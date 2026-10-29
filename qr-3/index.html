@@ -3,367 +3,307 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Red Neuro-Inclusiva TESI</title>
-    <!-- Importar fuente moderna y amigable -->
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
-    
+    <title>Red Neuro-Inclusiva | Acordeón Dinámico</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #0d9488; /* Verde azulado vibrante */
-            --primary-dark: #0f766e;
-            --secondary: #14b8a6;
-            --accent: #f59e0b; /* Ambar cálido */
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #334155;
-            --text-light: #64748b;
+            --primary: #0d9488;
+            --accent: #f59e0b;
+            --bg-color: #0f172a; /* Fondo oscuro elegante */
+            --text-light: #f8fafc;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Quicksand', sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
             background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.7;
-            overflow-x: hidden;
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
         }
 
-        /* Encabezado Animado */
         header {
-            background: linear-gradient(-45deg, #0d9488, #14b8a6, #0ea5e9, #0d9488);
-            background-size: 400% 400%;
-            animation: gradientBG 10s ease infinite;
-            color: white;
-            padding: 4rem 2rem;
             text-align: center;
-            border-bottom-left-radius: 30px;
-            border-bottom-right-radius: 30px;
-            box-shadow: 0 10px 30px rgba(13, 148, 136, 0.3);
             margin-bottom: 2rem;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
         header h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            letter-spacing: -1px;
+            font-size: 2.2rem;
+            background: linear-gradient(to right, #2dd4bf, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
+        /* ACORDEÓN HORIZONTAL MODERNO (Inspirado en tu idea) */
+        .accordion-container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            height: 65vh; /* Ocupa el 65% del alto de la pantalla */
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
-        /* Contenedor Principal */
-        main {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
+        .panel {
+            background-size: cover;
+            background-position: center;
+            flex: 1; /* Inicia delgado */
+            transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
         }
 
-        /* Clases para animación al hacer scroll (Dinamismo) */
-        .reveal {
+        /* Imágenes de fondo para cada panel (Puedes cambiarlas por fotos de tu universidad) */
+        .panel:nth-child(1) { background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'); }
+        .panel:nth-child(2) { background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'); }
+        .panel:nth-child(3) { background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1456406644174-8ddd4cd52a06?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'); }
+
+        .panel.active {
+            flex: 5; /* Se expande 5 veces su tamaño original */
+            cursor: default;
+        }
+
+        .panel-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
             opacity: 0;
             transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+            transition: all 0.5s ease 0.3s; /* Aparece con retraso después de expandirse */
         }
 
-        .reveal.active {
+        .panel.active .panel-content {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Tarjetas de Información */
-        .info-card {
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            margin-bottom: 2.5rem;
-            border-top: 5px solid var(--accent);
+        .panel h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            white-space: nowrap; /* Evita que el título se rompa cuando está cerrado */
+            position: absolute;
+            bottom: 2rem;
+            left: -3rem;
+            transform: rotate(-90deg);
+            transform-origin: left bottom;
+            transition: all 0.5s ease;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .panel.active h2 {
+            transform: rotate(0);
             position: relative;
-            transition: transform 0.3s ease;
+            left: 0;
+            bottom: 0;
+            white-space: normal;
         }
 
-        .info-card:hover {
-            transform: translateY(-5px);
+        .panel p {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            color: #cbd5e1;
         }
 
-        .info-card h2 {
-            color: var(--primary-dark);
-            margin-bottom: 1rem;
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Sistema de Acordeones Premium */
-        .accordion {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .accordion-item {
-            background: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-            overflow: hidden;
-            transition: all 0.3s ease;
-            border: 1px solid #e2e8f0;
-        }
-
-        .accordion-item:hover {
-            box-shadow: 0 10px 25px rgba(13, 148, 136, 0.1);
-            border-color: var(--secondary);
-        }
-
-        .accordion-header {
-            width: 100%;
-            text-align: left;
-            padding: 1.5rem;
-            background: none;
-            border: none;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--text-main);
+        /* Botones para abrir ventanas interactivas */
+        .btn-concept {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
             cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: color 0.3s ease;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
         }
 
-        .accordion-header:hover {
-            color: var(--primary);
+        .btn-concept:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: scale(1.05);
         }
 
-        /* Icono dinámico del acordeón */
-        .icon-box {
-            width: 35px;
-            height: 35px;
-            background: var(--bg-color);
-            border-radius: 50%;
+        /* VENTANAS EMERGENTES (MODALES) - La innovación que pediste */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px); /* Efecto cristal esmerilado */
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-box {
+            background: white;
+            color: var(--bg-color);
+            width: 90%;
+            max-width: 500px;
+            padding: 2.5rem;
+            border-radius: 20px;
+            transform: translateY(50px) scale(0.9);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-box h3 {
             color: var(--primary);
             font-size: 1.5rem;
-            transition: all 0.4s ease;
-        }
-
-        .accordion-item.active .icon-box {
-            background: var(--primary);
-            color: white;
-            transform: rotate(180deg);
-        }
-
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.5, 0, 0, 1);
-            background-color: #fcfcfc;
-        }
-
-        .content-inner {
-            padding: 0 1.5rem 1.5rem 1.5rem;
-        }
-
-        .tag-container {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
             margin-bottom: 1rem;
         }
 
-        .tag {
-            background: var(--bg-color);
-            color: var(--primary-dark);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            border: 1px solid #cbd5e1;
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: color 0.2s;
         }
 
-        h3 {
-            color: var(--primary);
-            font-size: 1.1rem;
-            margin: 1.2rem 0 0.5rem 0;
-        }
+        .close-btn:hover { color: #ef4444; }
 
-        ul {
-            padding-left: 1.5rem;
-            color: var(--text-light);
-        }
-
-        li { margin-bottom: 0.5rem; }
-
-        footer {
-            text-align: center;
-            padding: 3rem 1.5rem;
-            color: var(--text-light);
-            font-weight: 600;
-            font-size: 0.9rem;
+        /* Adaptación para Celulares */
+        @media (max-width: 768px) {
+            .accordion-container {
+                flex-direction: column; /* En celular se apilan verticalmente */
+                height: 80vh;
+            }
+            .panel h2 {
+                transform: rotate(0);
+                left: 1rem;
+                bottom: 1rem;
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Red Neuro-Inclusiva</h1>
-        <p>TESI • Construyendo un aprendizaje para todos</p>
+        <h1>Perfiles Neurodivergentes</h1>
+        <p>Toca un panel para descubrir más</p>
     </header>
 
-    <main>
-        <!-- Sección 1: Concepto -->
-        <section class="info-card reveal">
-            <h2>🧠 ¿Qué es la Neurodivergencia?</h2>
-            <p>Es la idea natural de que los cerebros humanos funcionan, aprenden y procesan la información de maneras distintas. No hay un cerebro "correcto" o "incorrecto", simplemente existe una hermosa diversidad cognitiva.</p>
-            <br>
-            <p><strong>El objetivo en el TESI:</strong> No buscamos cambiar a la persona para que encaje en el sistema, sino adaptar el entorno para que todas las mentes puedan brillar.</p>
-        </section>
-
-        <!-- Sección 2: Perfiles y Estilos de Aprendizaje -->
-        <div class="reveal">
-            <h2 style="color: var(--primary-dark); margin-bottom: 1.5rem; text-align: center;">Perfiles y Estilos de Aprendizaje</h2>
-        </div>
+    <div class="accordion-container">
         
-        <div class="accordion">
-            <!-- TDAH -->
-            <div class="accordion-item reveal">
-                <button class="accordion-header">
-                    TDAH (Atención e Hiperactividad)
-                    <span class="icon-box">↓</span>
-                </button>
-                <div class="accordion-content">
-                    <div class="content-inner">
-                        <div class="tag-container">
-                            <span class="tag">Creativos</span>
-                            <span class="tag">Pensamiento rápido</span>
-                            <span class="tag">Energéticos</span>
-                        </div>
-                        <h3>✨ Características:</h3>
-                        <p>Tienen un cerebro hiperactivo que busca constantemente estímulos. Pueden tener dificultades para mantener la atención en tareas monótonas, pero logran un "hiperenfoque" increíble en temas que les apasionan.</p>
-                        
-                        <h3>💡 ¿Cómo aprenden mejor?</h3>
-                        <ul>
-                            <li><strong>Aprendizaje Kinestésico:</strong> Necesitan movimiento. Aprender haciendo prácticas o laboratorios les funciona mejor que solo escuchar.</li>
-                            <li><strong>Micro-aprendizaje:</strong> Información dividida en bloques cortos (técnica Pomodoro) en lugar de sesiones largas de 2 horas.</li>
-                            <li><strong>Gamificación:</strong> Responden excelente a recompensas visuales, retos y sistemas de puntos.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TEA -->
-            <div class="accordion-item reveal">
-                <button class="accordion-header">
-                    Espectro Autista (TEA)
-                    <span class="icon-box">↓</span>
-                </button>
-                <div class="accordion-content">
-                    <div class="content-inner">
-                        <div class="tag-container">
-                            <span class="tag">Lógicos</span>
-                            <span class="tag">Detallistas</span>
-                            <span class="tag">Leales</span>
-                        </div>
-                        <h3>✨ Características:</h3>
-                        <p>Procesan el mundo de manera intensa. Destacan por su honestidad, memoria profunda para detalles y pensamiento lógico. Pueden ser hipersensibles a luces brillantes o ruidos fuertes (sobrecarga sensorial).</p>
-                        
-                        <h3>💡 ¿Cómo aprenden mejor?</h3>
-                        <ul>
-                            <li><strong>Aprendizaje Estructurado:</strong> Necesitan rutinas claras. Saber exactamente qué va a pasar en la clase (un temario visual) reduce su ansiedad.</li>
-                            <li><strong>Instrucciones Literales:</strong> Aprenden mejor con instrucciones directas, sin dobles sentidos o sarcasmos complejos.</li>
-                            <li><strong>Apoyo Visual:</strong> Los diagramas, infografías y mapas conceptuales les ayudan a procesar mejor que largos bloques de texto hablado.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Dislexia -->
-            <div class="accordion-item reveal">
-                <button class="accordion-header">
-                    Dislexia
-                    <span class="icon-box">↓</span>
-                </button>
-                <div class="accordion-content">
-                    <div class="content-inner">
-                        <div class="tag-container">
-                            <span class="tag">Visuales</span>
-                            <span class="tag">Innovadores</span>
-                            <span class="tag">Intuitivos</span>
-                        </div>
-                        <h3>✨ Características:</h3>
-                        <p>Su cerebro procesa el lenguaje y las palabras de forma diferente, haciendo que la lectura o escritura tradicional sea un esfuerzo agotador. Sin embargo, tienen una capacidad superior para el razonamiento espacial y ver el "panorama general".</p>
-                        
-                        <h3>💡 ¿Cómo aprenden mejor?</h3>
-                        <ul>
-                            <li><strong>Aprendizaje Multisensorial:</strong> Usar videos, podcasts o audiolibros como complemento a las lecturas obligatorias.</li>
-                            <li><strong>Formatos Amigables:</strong> Textos con interlineado amplio, viñetas cortas y fuentes "Sans-Serif" (como Arial o Comic Sans) que no junten las letras.</li>
-                            <li><strong>Menos carga escrita:</strong> Demuestran mejor su conocimiento a través de exposiciones orales, proyectos visuales o maquetas que con exámenes de redacción larga.</li>
-                        </ul>
-                    </div>
-                </div>
+        <!-- Panel 1: TDAH -->
+        <div class="panel active" onclick="activatePanel(this)">
+            <h2>TDAH</h2>
+            <div class="panel-content">
+                <p>Atención e Hiperactividad. Mentes creativas que buscan estímulos constantes.</p>
+                <button class="btn-concept" onclick="openModal('modal-hiperenfoque', event)">¿Qué es el Hiperenfoque?</button>
+                <button class="btn-concept" onclick="openModal('modal-tdah-aprende', event)">¿Cómo aprenden?</button>
             </div>
         </div>
-    </main>
 
-    <footer>
-        <p>❤️ Proyecto desarrollado por Ángel Esau Tamayo Duran | TESI</p>
-    </footer>
+        <!-- Panel 2: TEA -->
+        <div class="panel" onclick="activatePanel(this)">
+            <h2>Espectro Autista</h2>
+            <div class="panel-content">
+                <p>Mentes lógicas, detallistas y estructuradas con procesamiento sensorial profundo.</p>
+                <button class="btn-concept" onclick="openModal('modal-sensorial', event)">Sobrecarga Sensorial</button>
+                <button class="btn-concept" onclick="openModal('modal-tea-aprende', event)">¿Cómo aprenden?</button>
+            </div>
+        </div>
 
-    <!-- JavaScript para animaciones y dinamismo -->
+        <!-- Panel 3: Dislexia -->
+        <div class="panel" onclick="activatePanel(this)">
+            <h2>Dislexia</h2>
+            <div class="panel-content">
+                <p>Innovadores visuales que procesan el lenguaje escrito de forma alternativa.</p>
+                <button class="btn-concept" onclick="openModal('modal-multisensorial', event)">Apoyo Multisensorial</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- =============== MODALES (Las Ventanas Interactivas) =============== -->
+    
+    <!-- Modal 1 -->
+    <div id="modal-hiperenfoque" class="modal-overlay" onclick="closeModal(this)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeModal(this.parentElement.parentElement)">×</button>
+            <h3>El Súper-poder del Hiperenfoque</h3>
+            <p>Aunque el TDAH se asocia a la falta de atención, cuando un tema les apasiona, su cerebro libera dopamina y entran en un estado de concentración profunda ("hiperenfoque"). Pueden trabajar horas sin cansarse, perdiendo la noción del tiempo. ¡El reto docente es despertar ese interés inicial!</p>
+        </div>
+    </div>
+
+    <!-- Modal 2 -->
+    <div id="modal-tdah-aprende" class="modal-overlay" onclick="closeModal(this)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeModal(this.parentElement.parentElement)">×</button>
+            <h3>TDAH: Estilo de Aprendizaje</h3>
+            <p>Aprender <strong>haciendo</strong> (Kinestésicos). Necesitan pausas activas, información dividida en bloques muy cortos y gamificación (retos y recompensas). Escuchar una clase magistral de 2 horas sin moverse es su mayor barrera.</p>
+        </div>
+    </div>
+
+    <!-- Modal 3 -->
+    <div id="modal-sensorial" class="modal-overlay" onclick="closeModal(this)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeModal(this.parentElement.parentElement)">×</button>
+            <h3>Sobrecarga Sensorial (TEA)</h3>
+            <p>Imagina que todos los sonidos de la escuela, las luces de los pizarrones y el roce de la ropa estuvieran al 100% de volumen en tu cabeza al mismo tiempo. Eso es una sobrecarga. Permitirles usar audífonos de cancelación de ruido no es una falta de respeto, es una necesidad de autorregulación.</p>
+        </div>
+    </div>
+
+    <!-- Scripts para controlar la magia -->
     <script>
-        // Lógica del Acordeón
-        const accordionItems = document.querySelectorAll('.accordion-item');
-        accordionItems.forEach(item => {
-            const header = item.querySelector('.accordion-header');
-            header.addEventListener('click', () => {
-                const isActive = item.classList.contains('active');
-                
-                // Cerrar todos
-                accordionItems.forEach(otherItem => {
-                    otherItem.classList.remove('active');
-                    otherItem.querySelector('.accordion-content').style.maxHeight = null;
-                });
-
-                // Abrir el clickeado
-                if (!isActive) {
-                    item.classList.add('active');
-                    const content = item.querySelector('.accordion-content');
-                    content.style.maxHeight = content.scrollHeight + "px";
-                }
+        // Función para expandir el panel del acordeón
+        function activatePanel(selectedPanel) {
+            // Quitar clase active a todos
+            document.querySelectorAll('.panel').forEach(panel => {
+                panel.classList.remove('active');
             });
-        });
-
-        // Animación de aparición al hacer scroll (Scroll Reveal)
-        function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 100; // a qué altura aparece
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add("active");
-                }
-            }
+            // Añadir clase active al seleccionado
+            selectedPanel.classList.add('active');
         }
-        window.addEventListener("scroll", reveal);
-        reveal(); // Ejecutar al inicio por si ya están en pantalla
+
+        // Función para abrir la ventana modal
+        function openModal(modalId, event) {
+            event.stopPropagation(); // Evita que el clic cierre el acordeón de fondo
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        // Función para cerrar la ventana modal
+        function closeModal(element) {
+            element.classList.remove('active');
+        }
     </script>
 </body>
 </html>
